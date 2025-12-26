@@ -1,176 +1,276 @@
-/* --- 1. 暗黑高级风格定义 --- */
-        :root {
-            --bg-color: #0b1120;
-            --panel-bg: rgba(30, 41, 59, 0.4);
-            --panel-border: 1px solid rgba(148, 163, 184, 0.1);
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            
-            /* 状态色定义 */
-            --c-green: #34d399;  /* 优 */
-            --c-blue: #38bdf8;   /* 良 */
-            --c-yellow: #fbbf24; /* 中 */
-            --c-red: #f87171;    /* 差 */
-            
-            --line-color: rgba(56, 189, 248, 0.3);
-        }
+/* --- 1. 全局变量定义 (Theme Variables) --- */
+:root {
+    /* --- 默认：暗黑模式 (Dark Mode) --- */
+    --bg-color: #0b1120;
+    --bg-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
+    
+    /* 面板与容器 */
+    --panel-bg: rgba(30, 41, 59, 0.4);
+    --panel-border: 1px solid rgba(148, 163, 184, 0.1);
+    
+    /* 顶部与组件背景 (新增变量以支持切换) */
+    --header-bg: rgba(15, 23, 42, 0.6); 
+    --node-bg: rgba(15, 23, 42, 0.8);
+    --info-bg: rgba(2, 6, 23, 0.5);
 
-        body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            color: var(--text-primary);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+    /* 文字颜色 */
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    
+    /* 地图相关 */
+    --map-bg: rgba(15, 23, 42, 0.3);
+    --map-grid: rgba(56, 189, 248, 0.05);
+    --line-color: rgba(56, 189, 248, 0.3);
 
-        /* 顶部通栏 */
-        header {
-            height: 60px;
-            padding: 0 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            z-index: 100;
-        }
+    /* 状态色 */
+    --c-green: #34d399; 
+    --c-blue: #38bdf8;
+    --c-yellow: #fbbf24;
+    --c-red: #f87171;
+}
 
-        header h1 {
-            font-size: 22px;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-        }
+/* --- 2. 白天模式 (Light Mode) --- */
+body.theme-light {
+    --bg-color: #f8fafc;
+    --bg-image: radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%);
+    
+    /* 面板变白 */
+    --panel-bg: rgba(255, 255, 255, 0.75);
+    --panel-border: 1px solid rgba(203, 213, 225, 0.8);
 
-        .sys-time {
-            font-family: 'Courier New', monospace;
-            color: var(--c-blue);
-            font-weight: bold;
-            font-size: 16px;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-        }
+    /* 组件背景变亮 */
+    --header-bg: rgba(255, 255, 255, 0.85);
+    --node-bg: rgba(255, 255, 255, 0.9);
+    --info-bg: rgba(255, 255, 255, 0.6);
+    
+    /* 文字变深 */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    
+    /* 地图变亮 */
+    --map-bg: rgba(255, 255, 255, 0.5);
+    --map-grid: rgba(59, 130, 246, 0.1); /* 蓝色淡网格 */
+    --line-color: #3b82f6; 
+}
 
-        /* --- 布局 --- */
-        .dashboard-container {
-            flex: 1;
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-            height: calc(100vh - 80px);
-        }
+/* --- 3. 基础样式 --- */
+body {
+    margin: 0; padding: 0;
+    background-color: var(--bg-color);
+    background-image: var(--bg-image);
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s ease; /* 核心：平滑过渡动画 */
+}
 
-        .col-side { width: 25%; display: flex; flex-direction: column; gap: 20px; }
-        .col-center { width: 50%; position: relative; display: flex; flex-direction: column; }
+/* 顶部通栏 */
+header {
+    height: 60px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--header-bg); /* 使用变量 */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05); /* 这个边框很淡，两套主题通用 */
+    z-index: 100;
+    transition: background 0.5s;
+}
 
-        .card {
-            background: var(--panel-bg);
-            border: var(--panel-border);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            backdrop-filter: blur(8px);
-        }
+header h1 {
+    font-size: 22px;
+    letter-spacing: 2px;
+    /* 标题渐变色在浅色模式下可能需要调整，这里做一个简单的通用处理 */
+    background: linear-gradient(90deg, var(--c-blue), var(--text-secondary)); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
 
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: var(--text-secondary);
-            border-left: 3px solid var(--c-blue);
-            padding-left: 10px;
-            letter-spacing: 1px;
-        }
+.sys-time {
+    font-family: 'Courier New', monospace;
+    color: var(--c-blue);
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
 
-        .chart-box { flex: 1; width: 100%; }
+/* 主题切换按钮 */
+.theme-switch-btn {
+    background: rgba(125, 125, 125, 0.1);
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+}
+.theme-switch-btn:hover {
+    background: var(--c-blue);
+    color: #fff;
+    border-color: var(--c-blue);
+}
 
-        /* --- 中间地图 --- */
-        .map-stage {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.3);
-            border-radius: 12px;
-            border: 1px solid rgba(56, 189, 248, 0.1);
-            position: relative;
-            background-image: 
-                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
-        }
+/* --- 4. 布局 --- */
+.dashboard-container {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    height: calc(100vh - 80px);
+}
 
-        /* 动态连线 SVG */
-        .svg-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
-        }
-        .connection-path {
-            fill: none;
-            stroke: var(--line-color);
-            stroke-width: 2;
-            stroke-dasharray: 8, 8;
-            filter: drop-shadow(0 0 5px var(--c-blue));
-            animation: flow 40s linear infinite;
-        }
-        @keyframes flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }
+.col-side { width: 25%; display: flex; flex-direction: column; gap: 20px; }
+.col-center { width: 50%; position: relative; display: flex; flex-direction: column; }
 
-        /* 按钮样式 */
-        .node-btn {
-            position: absolute;
-            padding: 10px 20px;
-            background: rgba(15, 23, 42, 0.8);
-            color: var(--text-secondary);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 10;
-            backdrop-filter: blur(4px);
-            transform: translate(-50%, -50%); /* 居中定位 */
-        }
+/* 卡片容器 */
+.card {
+    background: var(--panel-bg);
+    border: var(--panel-border);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    backdrop-filter: blur(8px);
+    transition: background 0.5s, border 0.5s;
+}
 
-        .status-led {
-            width: 6px; height: 6px; border-radius: 50%;
-            background-color: #475569; box-shadow: 0 0 0 1px #475569;
-            transition: all 0.3s;
-        }
+.card h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-left: 3px solid var(--c-blue);
+    padding-left: 10px;
+    letter-spacing: 1px;
+}
 
-        .type-edu { --theme: var(--c-blue); }
-        .type-lib { --theme: var(--c-green); }
-        .type-food { --theme: var(--c-yellow); }
+.chart-box { flex: 1; width: 100%; }
 
-        .node-btn:hover { border-color: var(--theme); color: #fff; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 20; }
-        .node-btn:hover .status-led { background-color: var(--theme); box-shadow: 0 0 8px var(--theme); }
-        .node-btn.active { background: var(--theme); color: #000; border-color: var(--theme); box-shadow: 0 0 20px var(--theme); z-index: 20; }
-        .node-btn.active .status-led { background-color: #fff; box-shadow: 0 0 5px #fff; }
+/* --- 5. 中间概览面板 (新增) --- */
+.overview-panel {
+    background: var(--panel-bg);
+    border: var(--panel-border);
+    border-radius: 8px;
+    padding: 15px 25px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+    transition: background 0.5s, border 0.5s;
+}
 
-        /* 按钮位置 */
-        #btn-library { top: 20%; left: 75%; }
-        #btn-zhijin { top: 30%; left: 30%; }
-        #btn-gezhi { top: 50%; left: 15%; }
-        #btn-canteen3 { top: 50%; left: 85%; }
-        #btn-canteen1 { top: 70%; left: 40%; }
-        #btn-canteen2 { top: 65%; left: 60%; }
+.data-item { text-align: center; }
+.data-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 5px; letter-spacing: 1px; }
+.data-value {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(125,125,125,0.1);
+}
+.data-split {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--text-secondary), transparent);
+    opacity: 0.3;
+}
 
-        /* 底部信息条 */
-        .info-bar {
-            margin-top: 15px;
-            background: rgba(2, 6, 23, 0.5);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 12px 20px;
-            border-radius: 6px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+/* --- 6. 中间地图 --- */
+.map-stage {
+    flex: 1;
+    background: var(--map-bg); /* 修复：使用变量 */
+    border-radius: 12px;
+    border: 1px solid var(--line-color);
+    position: relative;
+    /* 修复：使用变量构建网格 */
+    background-image: 
+        linear-gradient(var(--map-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--map-grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    box-shadow: inset 0 0 80px rgba(0,0,0,0.05);
+    transition: background 0.5s, border 0.5s;
+}
+
+/* 动态连线 SVG */
+.svg-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+}
+.connection-path {
+    fill: none;
+    stroke: var(--line-color);
+    stroke-width: 2;
+    stroke-dasharray: 8, 8;
+    filter: drop-shadow(0 0 5px var(--c-blue));
+    animation: flow 40s linear infinite;
+}
+@keyframes flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }
+
+/* --- 7. 节点按钮 --- */
+.node-btn {
+    position: absolute;
+    padding: 10px 20px;
+    background: var(--node-bg); /* 修复：使用变量 */
+    color: var(--text-secondary);
+    border: 1px solid rgba(125,125,125,0.2);
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.status-led {
+    width: 6px; height: 6px; border-radius: 50%;
+    background-color: var(--text-secondary); 
+    box-shadow: 0 0 0 1px var(--text-secondary);
+    transition: all 0.3s;
+}
+
+.type-edu { --theme: var(--c-blue); }
+.type-lib { --theme: var(--c-green); }
+.type-food { --theme: var(--c-yellow); }
+
+/* 悬停效果 */
+.node-btn:hover { border-color: var(--theme); color: var(--theme); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); z-index: 20; }
+.node-btn:hover .status-led { background-color: var(--theme); box-shadow: 0 0 8px var(--theme); }
+
+/* 激活效果 */
+.node-btn.active { background: var(--theme); color: #fff; border-color: var(--theme); box-shadow: 0 0 20px var(--theme); z-index: 20; }
+.node-btn.active .status-led { background-color: #fff; box-shadow: 0 0 5px #fff; }
+
+/* 按钮位置 */
+#btn-library { top: 20%; left: 75%; }
+#btn-zhijin { top: 30%; left: 30%; }
+#btn-gezhi { top: 50%; left: 15%; }
+#btn-canteen3 { top: 50%; left: 85%; }
+#btn-canteen1 { top: 70%; left: 40%; }
+#btn-canteen2 { top: 65%; left: 60%; }
+
+/* --- 8. 底部信息条 --- */
+.info-bar {
+    margin-top: 15px;
+    background: var(--info-bg); /* 修复：使用变量 */
+    border: 1px solid var(--panel-border);
+    padding: 12px 20px;
+    border-radius: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.5s;
+}

@@ -12,7 +12,11 @@
 
 <header>
     <h1>📡 智慧校园态势感知中心</h1>
-    <div class="sys-time" id="clock">2025-01-01 12:00:00</div>
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <!-- 新增按钮 -->
+        <button id="theme-btn" onclick="toggleTheme()" class="theme-switch-btn">☀️ 切换主题</button>
+        <div class="sys-time" id="clock">2025-01-01 12:00:00</div>
+    </div>
 </header>
 
 <div class="dashboard-container">
@@ -32,6 +36,22 @@
     </div>
 
     <div class="col-center">
+
+        <!-- 【新增部分 START】 全校数据概览面板 -->
+    <div class="overview-panel">
+        <div class="data-item">
+            <div class="data-label">全校在校总人数</div>
+            <div class="data-value" id="total-num">15,420</div>
+        </div>
+        <div class="data-split"></div>
+        <div class="data-item">
+            <div class="data-label">全校男女比例 (M/F)</div>
+            <div class="data-value" id="gender-ratio">
+                <span style="color:var(--c-blue)">54%</span> : <span style="color:#f472b6">46%</span>
+            </div>
+        </div>
+    </div>
+    <!-- 【新增部分 END】 -->
         <div class="map-stage" id="mapStage">
             <svg class="svg-layer"><path id="dynamic-connection" class="connection-path" d="" /></svg>
             
