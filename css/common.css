@@ -1,211 +1,438 @@
 /* --- 1. 全局变量定义 (Theme Variables) --- */
+
+
+/* 定义暗色主题的颜色变量 */
+
 :root {
     /* --- 默认：暗黑模式 (Dark Mode) --- */
     --bg-color: #0b1120;
+    /* 页面背景色 */
     --bg-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
-    
+    /* 页面背景渐变 */
     /* 面板与容器 */
     --panel-bg: rgba(30, 41, 59, 0.4);
+    /* 面板背景色（半透明） */
     --panel-border: 1px solid rgba(148, 163, 184, 0.1);
-    
+    /* 面板边框 */
     /* 顶部与组件背景 (新增变量以支持切换) */
-    --header-bg: rgba(15, 23, 42, 0.6); 
+    --header-bg: rgba(15, 23, 42, 0.6);
+    /* 顶部导航背景 */
     --node-bg: rgba(15, 23, 42, 0.8);
+    /* 节点按钮背景 */
     --info-bg: rgba(2, 6, 23, 0.5);
-
+    /* 信息栏背景 */
     /* 文字颜色 */
     --text-primary: #e2e8f0;
+    /* 主要文字颜色 */
     --text-secondary: #94a3b8;
-    
+    /* 次要文字颜色 */
     /* 地图相关 */
     --map-bg: rgba(15, 23, 42, 0.3);
+    /* 地图区域背景 */
     --map-grid: rgba(56, 189, 248, 0.05);
+    /* 地图网格线 */
     --line-color: rgba(56, 189, 248, 0.3);
-
+    /* 连接线颜色 */
     /* 状态色 */
-    --c-green: #34d399; 
+    --c-green: #34d399;
+    /* 绿色状态 */
     --c-blue: #38bdf8;
+    /* 蓝色状态 */
     --c-yellow: #fbbf24;
+    /* 黄色状态 */
     --c-red: #f87171;
+    /* 红色状态 */
 }
+
+
+/* 定义SmileySans字体 */
+
+@font-face {
+    font-family: 'SmileySans';
+    src: url('../font/SmileySans-Oblique.otf') format('opentype');
+    font-display: swap;
+}
+
 
 /* --- 2. 白天模式 (Light Mode) --- */
+
+
+/* 定义亮色主题的颜色变量 */
+
 body.theme-light {
     --bg-color: #f8fafc;
+    /* 页面背景色（亮色） */
     --bg-image: radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%);
-    
+    /* 页面背景渐变（亮色） */
     /* 面板变白 */
     --panel-bg: rgba(255, 255, 255, 0.75);
+    /* 面板背景（亮色） */
     --panel-border: 1px solid rgba(203, 213, 225, 0.8);
-
+    /* 面板边框（亮色） */
     /* 组件背景变亮 */
     --header-bg: rgba(255, 255, 255, 0.85);
+    /* 顶部导航背景（亮色） */
     --node-bg: rgba(255, 255, 255, 0.9);
+    /* 节点按钮背景（亮色） */
     --info-bg: rgba(255, 255, 255, 0.6);
-    
+    /* 信息栏背景（亮色） */
     /* 文字变深 */
     --text-primary: #1e293b;
+    /* 主要文字颜色（深色） */
     --text-secondary: #64748b;
-    
+    /* 次要文字颜色（深色） */
     /* 地图变亮 */
     --map-bg: rgba(255, 255, 255, 0.5);
-    --map-grid: rgba(59, 130, 246, 0.1); /* 蓝色淡网格 */
-    --line-color: #3b82f6; 
+    /* 地图区域背景（亮色） */
+    --map-grid: rgba(59, 130, 246, 0.1);
+    /* 地图网格线（亮色） */
+    --line-color: #3b82f6;
+    /* 连接线颜色（亮色） */
 }
+
 
 /* --- 3. 基础样式 --- */
+
+
+/* 页面主体样式设置 */
+
 body {
-    margin: 0; padding: 0;
+    margin: 0;
+    padding: 0;
+    /* 重置外边距和内边距 */
     background-color: var(--bg-color);
+    /* 使用CSS变量设置背景色 */
     background-image: var(--bg-image);
-    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    /* 使用CSS变量设置背景图像 */
+    font-family: 'SmileySans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    /* 设置SmileySans字体 */
+    font-size: 110%;
+    /* 增加10%的字体大小 */
     color: var(--text-primary);
+    /* 使用CSS变量设置文字颜色 */
     height: 100vh;
+    /* 高度占满视窗 */
     overflow: hidden;
+    /* 隐藏滚动条 */
     display: flex;
+    /* 使用flex布局 */
     flex-direction: column;
-    transition: all 0.5s ease; /* 核心：平滑过渡动画 */
+    /* 垂直方向布局 */
+    transition: all 0.5s ease;
+    /* 核心：平滑过渡动画 */
 }
 
-/* 顶部通栏 */
+
+/* 顶部通栏样式 */
+
 header {
     height: 60px;
+    /* 设置高度 */
     padding: 0 30px;
+    /* 左右内边距 */
     display: flex;
+    /* 使用flex布局 */
     align-items: center;
+    /* 垂直居中对齐 */
     justify-content: space-between;
-    background: var(--header-bg); /* 使用变量 */
+    /* 两端对齐 */
+    background: var(--header-bg);
+    /* 使用变量设置背景 */
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.05); /* 这个边框很淡，两套主题通用 */
+    /* 背景模糊效果 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* 底部边框 */
     z-index: 100;
+    /* 设置层级 */
     transition: background 0.5s;
+    /* 背景颜色过渡 */
 }
+
+
+/* 标题样式 */
 
 header h1 {
     font-size: 22px;
+    /* 字体大小 */
     letter-spacing: 2px;
+    /* 字间距 */
     /* 标题渐变色在浅色模式下可能需要调整，这里做一个简单的通用处理 */
-    background: linear-gradient(90deg, var(--c-blue), var(--text-secondary)); 
+    background: linear-gradient(90deg, var(--c-blue), var(--text-secondary));
+    /* 渐变背景 */
     -webkit-background-clip: text;
+    /* 背景裁剪为文字 */
     -webkit-text-fill-color: transparent;
+    /* 文字填充透明 */
     margin: 0;
+    /* 重置外边距 */
 }
+
+
+/* 系统时间样式 */
 
 .sys-time {
     font-family: 'Courier New', monospace;
+    /* 等宽字体 */
     color: var(--c-blue);
+    /* 蓝色文字 */
     font-weight: bold;
+    /* 粗体 */
     font-size: 16px;
+    /* 字体大小 */
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    /* 文字阴影 */
 }
 
-/* 主题切换按钮 */
+
+/* 主题切换按钮样式 */
+
 .theme-switch-btn {
     background: rgba(125, 125, 125, 0.1);
+    /* 半透明灰色背景 */
     border: 1px solid var(--text-secondary);
+    /* 使用CSS变量的边框 */
     color: var(--text-primary);
+    /* 使用CSS变量的文字颜色 */
     padding: 5px 12px;
+    /* 内边距 */
     border-radius: 4px;
+    /* 圆角 */
     cursor: pointer;
+    /* 鼠标指针样式 */
     font-size: 12px;
+    /* 字体大小 */
     transition: all 0.3s;
+    /* 过渡动画 */
 }
+
+
+/* 主题切换按钮悬停效果 */
+
 .theme-switch-btn:hover {
     background: var(--c-blue);
+    /* 悬停时蓝色背景 */
     color: #fff;
+    /* 悬停时白色文字 */
     border-color: var(--c-blue);
+    /* 悬停时蓝色边框 */
 }
 
-/* --- 4. 布局 --- */
+
+/* --- 4. 布局样式 --- */
+
+
+/* 仪表板容器，使用flex布局 */
+
 .dashboard-container {
     flex: 1;
+    /* 占据剩余空间 */
     display: flex;
+    /* 使用flex布局 */
     padding: 20px;
+    /* 内边距 */
     gap: 20px;
+    /* 项目间距 */
     height: calc(100vh - 80px);
+    /* 高度计算：视窗高度 - 80px */
+    font-size: 110%;
+    /* 在全局基础上再增加10% */
 }
 
-.col-side { width: 25%; display: flex; flex-direction: column; gap: 20px; }
-.col-center { width: 50%; position: relative; display: flex; flex-direction: column; }
 
-/* 卡片容器 */
-.card {
-    background: var(--panel-bg);
-    border: var(--panel-border);
-    border-radius: 8px;
-    padding: 15px;
+/* 左右两列样式：占据25%宽度，垂直排列 */
+
+.col-side {
+    width: 25%;
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    backdrop-filter: blur(8px);
-    transition: background 0.5s, border 0.5s;
+    gap: 20px;
+    font-size: 110%;
+    /* 在全局基础上再增加10% */
 }
+
+
+/* 中间列样式：占据50%宽度，相对定位 */
+
+.col-center {
+    width: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: 110%;
+    /* 在全局基础上再增加10% */
+}
+
+
+/* 卡片容器样式 */
+
+.card {
+    background: var(--panel-bg);
+    /* 使用CSS变量的背景色 */
+    border: var(--panel-border);
+    /* 使用CSS变量的边框 */
+    border-radius: 8px;
+    /* 圆角 */
+    padding: 15px;
+    /* 内边距 */
+    display: flex;
+    /* 使用flex布局 */
+    flex-direction: column;
+    /* 垂直方向 */
+    flex: 1;
+    /* 占据剩余空间 */
+    min-height: 0;
+    /* 最小高度 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+    backdrop-filter: blur(8px);
+    /* 背景模糊 */
+    transition: background 0.5s, border 0.5s;
+    /* 过渡动画 */
+}
+
+
+/* 卡片标题样式 */
 
 .card h3 {
     margin: 0 0 10px 0;
-    font-size: 14px;
+    /* 外边距 */
+    font-size: 15.4px;
+    /* 增加10%的字体大小 (原14px * 1.1) */
     color: var(--text-secondary);
+    /* 使用CSS变量的文字颜色 */
     border-left: 3px solid var(--c-blue);
+    /* 左侧蓝色边框 */
     padding-left: 10px;
+    /* 左侧内边距 */
     letter-spacing: 1px;
+    /* 字间距 */
 }
 
-.chart-box { flex: 1; width: 100%; }
+
+/* 图表容器样式：占据剩余空间 */
+
+.chart-box {
+    flex: 1;
+    width: 100%;
+}
+
 
 /* --- 5. 中间概览面板 (新增) --- */
+
+
+/* 全校数据概览面板样式 */
+
 .overview-panel {
     background: var(--panel-bg);
+    /* 使用CSS变量的背景色 */
     border: var(--panel-border);
+    /* 使用CSS变量的边框 */
     border-radius: 8px;
+    /* 圆角 */
     padding: 15px 25px;
+    /* 内边距 */
     margin-bottom: 20px;
+    /* 底部外边距 */
     display: flex;
+    /* 使用flex布局 */
     align-items: center;
+    /* 垂直居中 */
     justify-content: space-around;
+    /* 两端对齐 */
     backdrop-filter: blur(8px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    /* 背景模糊 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
     flex-shrink: 0;
+    /* 不收缩 */
     transition: background 0.5s, border 0.5s;
+    /* 过渡动画 */
+    font-size: 110%;
+    /* 在全局基础上再增加10% */
 }
 
-.data-item { text-align: center; }
-.data-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 5px; letter-spacing: 1px; }
+
+/* 数据项样式 */
+
+.data-item {
+    text-align: center;
+    /* 文字居中 */
+}
+
+
+/* 数据标签样式 */
+
+.data-label {
+    font-size: 15.4px;
+    /* 增加10%的字体大小 (原14px * 1.1) */
+    color: var(--text-secondary);
+    /* 使用CSS变量的文字颜色 */
+    margin-bottom: 5px;
+    /* 底部外边距 */
+    letter-spacing: 1px;
+    /* 字间距 */
+}
+
+
+/* 数据值样式 */
+
 .data-value {
     font-family: 'Courier New', monospace;
-    font-size: 28px;
+    /* 等宽字体 */
+    font-size: 30.8px;
+    /* 增加10%的字体大小 (原28px * 1.1) */
     font-weight: bold;
+    /* 粗体 */
     color: var(--text-primary);
-    text-shadow: 0 0 10px rgba(125,125,125,0.1);
-}
-.data-split {
-    width: 1px; height: 40px;
-    background: linear-gradient(to bottom, transparent, var(--text-secondary), transparent);
-    opacity: 0.3;
+    /* 使用CSS变量的文字颜色 */
+    text-shadow: 0 0 10px rgba(125, 125, 125, 0.1);
+    /* 文字阴影 */
 }
 
-/* --- 6. 中间地图 --- */
+
+/* --- 6. 中间地图样式 --- */
+
+
+/* 地图区域样式 */
+
 .map-stage {
     flex: 1;
-    background: var(--map-bg); /* 修复：使用变量 */
+    /* 占据剩余空间 */
+    background: var(--map-bg);
+    /* 使用CSS变量的背景色 */
     border-radius: 12px;
+    /* 圆角 */
     border: 1px solid var(--line-color);
+    /* 使用CSS变量的边框色 */
     position: relative;
-    /* 修复：使用变量构建网格 */
-    background-image: 
-        linear-gradient(var(--map-grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--map-grid) 1px, transparent 1px);
+    /* 相对定位 */
+    /* 使用CSS变量构建网格背景 */
+    background-image: linear-gradient(var(--map-grid) 1px, transparent 1px), linear-gradient(90deg, var(--map-grid) 1px, transparent 1px);
     background-size: 40px 40px;
-    box-shadow: inset 0 0 80px rgba(0,0,0,0.05);
+    /* 网格大小 */
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.05);
+    /* 内阴影 */
     transition: background 0.5s, border 0.5s;
+    /* 过渡动画 */
 }
 
+
 /* 动态连线 SVG */
+
 .svg-layer {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    /* 设置层级在背景图片之上，按钮之下 */
+    pointer-events: none;
 }
+
+
+/* 连接路径样式 */
+
 .connection-path {
     fill: none;
     stroke: var(--line-color);
@@ -213,64 +440,266 @@ header h1 {
     stroke-dasharray: 8, 8;
     filter: drop-shadow(0 0 5px var(--c-blue));
     animation: flow 40s linear infinite;
+    /* 添加过渡效果使连接线变化更平滑 */
+    transition: d 0.1s ease;
 }
-@keyframes flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }
 
-/* --- 7. 节点按钮 --- */
+@keyframes flow {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+
+/* 地图背景图片样式 */
+
+.map-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    z-index: 1;
+    /* 确保在连接线之上，但在按钮之下 */
+    pointer-events: none;
+    /* 允许点击穿透到下方元素 */
+}
+
+.background-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* 保持图片比例 */
+    opacity: 0.3;
+    /* 设置透明度，使按钮和连接线可见 */
+}
+
+
+/* --- 7. 节点按钮样式 --- */
+
+
+/* 节点按钮基础样式 */
+
 .node-btn {
     position: absolute;
+    /* 绝对定位 */
     padding: 10px 20px;
-    background: var(--node-bg); /* 修复：使用变量 */
+    /* 内边距 */
+    background: var(--node-bg);
+    /* 使用CSS变量的背景色 */
     color: var(--text-secondary);
-    border: 1px solid rgba(125,125,125,0.2);
+    /* 使用CSS变量的文字颜色 */
+    border: 1px solid rgba(125, 125, 125, 0.2);
+    /* 边框 */
     border-radius: 4px;
-    font-size: 13px;
+    /* 圆角 */
+    font-size: 14.3px;
+    /* 增加10%的字体大小 (原13px * 1.1) */
     font-weight: bold;
+    /* 粗体 */
     cursor: pointer;
+    /* 鼠标指针 */
     transition: all 0.3s ease;
+    /* 过渡动画 */
     display: flex;
+    /* 使用flex布局 */
     align-items: center;
+    /* 垂直居中 */
     gap: 8px;
+    /* 间距 */
     z-index: 10;
+    /* 层级，确保按钮在最上层 */
     backdrop-filter: blur(4px);
+    /* 背景模糊 */
     transform: translate(-50%, -50%);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    /* 居中定位 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 阴影 */
 }
+
+
+/* 状态指示灯样式 */
 
 .status-led {
-    width: 6px; height: 6px; border-radius: 50%;
-    background-color: var(--text-secondary); 
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    /* 圆形 */
+    background-color: var(--text-secondary);
+    /* 背景色 */
     box-shadow: 0 0 0 1px var(--text-secondary);
+    /* 边框阴影 */
     transition: all 0.3s;
+    /* 过渡动画 */
 }
 
-.type-edu { --theme: var(--c-blue); }
-.type-lib { --theme: var(--c-green); }
-.type-food { --theme: var(--c-yellow); }
+
+/* 不同类型按钮的主题色定义 */
+
+.type-edu {
+    --theme: var(--c-blue);
+}
+
+
+/* 教学区使用蓝色 */
+
+.type-lib {
+    --theme: var(--c-green);
+}
+
+
+/* 图书馆使用绿色 */
+
+.type-food {
+    --theme: var(--c-yellow);
+}
+
+
+/* 食堂使用黄色 */
+
 
 /* 悬停效果 */
-.node-btn:hover { border-color: var(--theme); color: var(--theme); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); z-index: 20; }
-.node-btn:hover .status-led { background-color: var(--theme); box-shadow: 0 0 8px var(--theme); }
+
+.node-btn:hover {
+    border-color: var(--theme);
+    color: var(--theme);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    z-index: 20;
+}
+
+.node-btn:hover .status-led {
+    background-color: var(--theme);
+    box-shadow: 0 0 8px var(--theme);
+}
+
 
 /* 激活效果 */
-.node-btn.active { background: var(--theme); color: #fff; border-color: var(--theme); box-shadow: 0 0 20px var(--theme); z-index: 20; }
-.node-btn.active .status-led { background-color: #fff; box-shadow: 0 0 5px #fff; }
 
-/* 按钮位置 */
-#btn-library { top: 20%; left: 75%; }
-#btn-zhijin { top: 30%; left: 30%; }
-#btn-gezhi { top: 50%; left: 15%; }
-#btn-canteen3 { top: 50%; left: 85%; }
-#btn-canteen1 { top: 70%; left: 40%; }
-#btn-canteen2 { top: 65%; left: 60%; }
+.node-btn.active {
+    background: var(--theme);
+    color: #fff;
+    border-color: var(--theme);
+    box-shadow: 0 0 20px var(--theme);
+    z-index: 20;
+}
 
-/* --- 8. 底部信息条 --- */
+.node-btn.active .status-led {
+    background-color: #fff;
+    box-shadow: 0 0 5px #fff;
+}
+
+
+/* 按钮位置定位 */
+
+#btn-library {
+    top: 20%;
+    left: 75%;
+}
+
+
+/* 图书馆位置 */
+
+#btn-zhijin {
+    top: 30%;
+    left: 30%;
+}
+
+
+/* 知津楼位置 */
+
+#btn-gezhi {
+    top: 50%;
+    left: 15%;
+}
+
+
+/* 格致楼位置 */
+
+#btn-canteen3 {
+    top: 50%;
+    left: 85%;
+}
+
+
+/* 三食堂位置 */
+
+#btn-canteen1 {
+    top: 70%;
+    left: 40%;
+}
+
+
+/* 一食堂位置 */
+
+#btn-canteen2 {
+    top: 65%;
+    left: 60%;
+}
+
+
+/* 二食堂位置 */
+
+
+/* --- 8. 底部信息条样式 --- */
+
+
+/* 信息栏样式 */
+
 .info-bar {
     margin-top: 15px;
-    background: var(--info-bg); /* 修复：使用变量 */
+    background: var(--info-bg);
+    /* 使用CSS变量的背景色 */
     border: 1px solid var(--panel-border);
+    /* 使用CSS变量的边框 */
     padding: 12px 20px;
+    /* 内边距 */
     border-radius: 6px;
-    display: flex; justify-content: space-between; align-items: center;
+    /* 圆角 */
+    display: flex;
+    justify-content: space-between;
+    /* 两端对齐 */
+    align-items: center;
+    /* 垂直居中 */
     transition: background 0.5s;
+    /* 过渡动画 */
+    font-size: 110%;
+    /* 在全局基础上再增加10% */
+}
+
+.info-bar span {
+    font-size: 13.2px;
+    /* 增加10%的字体大小 (原12px * 1.1) */
+}
+
+.info-bar #info-name {
+    font-size: 17.6px;
+    /* 增加10%的字体大小 (原16px * 1.1) */
+}
+
+
+/* 为logo图片添加样式 */
+
+.logo-container {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.logo-img {
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 10px;
+    transition: filter 0.3s ease;
+    /* 添加过渡效果 */
+}
+
+
+/* 在明亮模式下为图片添加反色滤镜 */
+
+body.theme-light .logo-img {
+    filter: invert(1) hue-rotate(180deg);
+    /* 反色并调整色调 */
 }

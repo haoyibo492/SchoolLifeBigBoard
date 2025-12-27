@@ -1,94 +1,134 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智慧校园态势感知中心</title>
-    <script src="./js/common.js"></script>>
+    <!-- 引入公共JavaScript文件 -->
+    <script src="./js/common.js"></script>
+    <!-- 引入ECharts图表库 -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- 引入公共CSS样式文件 -->
     <link rel="stylesheet" href="./css/common.css" />
 </head>
+
 <body>
 
-<header>
-    <h1>📡 智慧校园态势感知中心</h1>
-    <div style="display: flex; align-items: center; gap: 15px;">
-        <!-- 新增按钮 -->
-        <button id="theme-btn" onclick="toggleTheme()" class="theme-switch-btn">☀️ 切换主题</button>
-        <div class="sys-time" id="clock">2025-01-01 12:00:00</div>
-    </div>
-</header>
+    <!-- 页面顶部标题和控制区域 -->
+    <header>
+        <h1><span class="logo-container"><img src="./images/logo1.png" alt="智慧校园" class="logo-img"> </span>| 📡 智慧校园态势感知中心</h1>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 主题切换按钮 -->
+            <button id="theme-btn" onclick="toggleTheme()" class="theme-switch-btn">☀️ 切换主题</button>
+            <!-- 系统时间显示 -->
+            <div class="sys-time" id="clock">2025-01-01 12:00:00</div>
+        </div>
+    </header>
 
-<div class="dashboard-container">
-    <div class="col-side">
-        <div class="card">
-            <h3>人流量趋势监测</h3>
-            <div id="chart-trend" class="chart-box"></div>
+    <!-- 仪表板容器，包含三列布局 -->
+    <div class="dashboard-container">
+        <!-- 左侧列，包含趋势图、饼图和雷达图 -->
+        <div class="col-side">
+            <div class="card">
+                <h3>人流量趋势监测</h3>
+                <!-- 人流量趋势图表容器 -->
+                <div id="chart-trend" class="chart-box"></div>
+            </div>
+            <div class="card">
+                <h3>区域热力分布占比</h3>
+                <!-- 区域分布饼图容器 -->
+                <div id="chart-pie" class="chart-box"></div>
+            </div>
+            <div class="card">
+                <h3>入校权限分析</h3>
+                <!-- 入校权限雷达图容器 -->
+                <div id="chart-radar" class="chart-box"></div>
+            </div>
         </div>
-        <div class="card">
-            <h3>区域热力分布占比</h3>
-            <div id="chart-pie" class="chart-box"></div>
-        </div>
-        <div class="card">
-            <h3>入校权限分析</h3>
-            <div id="chart-radar" class="chart-box"></div>
-        </div>
-    </div>
 
-    <div class="col-center">
+        <!-- 中间列，包含校园地图和信息面板 -->
+        <div class="col-center">
 
-        <!-- 【新增部分 START】 全校数据概览面板 -->
-    <div class="overview-panel">
-        <div class="data-item">
-            <div class="data-label">全校在校总人数</div>
-            <div class="data-value" id="total-num">15,420</div>
+            <!-- 【新增部分 START】 全校数据概览面板 -->
+            <div class="overview-panel">
+                <div class="data-item">
+                    <div class="data-label">全校在校总人数</div>
+                    <div class="data-value" id="total-num">15,420</div>
+                </div>
+                <div class="data-split"></div>
+                <div class="data-item">
+                    <div class="data-label">全校男女比例 (M/F)</div>
+                    <div class="data-value" id="gender-ratio">
+                        <span style="color:var(--c-blue)">54%</span> : <span style="color:#f472b6">46%</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 【新增部分 END】 -->
+
+            <!-- 地图区域，包含背景图片和各区域按钮 -->
+            <div class="map-stage" id="mapStage">
+                <!-- SVG层，包含动态连接线 -->
+                <svg class="svg-layer"><path id="dynamic-connection" class="connection-path" d="" /></svg>
+
+                <!-- 校园背景图片 -->
+                <div class="map-background">
+                    <img id="campus-bg" src="./images/image4.png" alt="校园背景图" class="background-img" />
+                </div>
+
+                <!-- 校园各区域按钮 -->
+                <div class="node-btn type-edu" id="btn-zhijin" onclick="handleSelect('zhijin')">
+                    <div class="status-led"></div>知津楼
+                </div>
+                <div class="node-btn type-edu" id="btn-gezhi" onclick="handleSelect('gezhi')">
+                    <div class="status-led"></div>格致楼
+                </div>
+                <div class="node-btn type-lib" id="btn-library" onclick="handleSelect('library')">
+                    <div class="status-led"></div>博文馆 (图书馆)
+                </div>
+                <div class="node-btn type-food" id="btn-canteen1" onclick="handleSelect('canteen1')">
+                    <div class="status-led"></div>一食堂
+                </div>
+                <div class="node-btn type-food" id="btn-canteen2" onclick="handleSelect('canteen2')">
+                    <div class="status-led"></div>二食堂
+                </div>
+                <div class="node-btn type-food" id="btn-canteen3" onclick="handleSelect('canteen3')">
+                    <div class="status-led"></div>三食堂
+                </div>
+            </div>
+
+            <!-- 信息栏，显示当前选中区域的详细信息 -->
+            <div class="info-bar">
+                <div>
+                    <span style="color:#64748b; font-size:12px;">当前选中目标</span><br>
+                    <span id="info-name" style="font-size:16px; font-weight:bold; color:var(--c-blue);">正在初始化...</span>
+                </div>
+                <div style="text-align:right;">
+                    <span style="color:#64748b; font-size:12px;">状态摘要</span><br>
+                    <span id="info-status" style="font-family:'Courier New'; font-weight:bold;">WAITING FOR SIGNAL</span>
+                </div>
+            </div>
         </div>
-        <div class="data-split"></div>
-        <div class="data-item">
-            <div class="data-label">全校男女比例 (M/F)</div>
-            <div class="data-value" id="gender-ratio">
-                <span style="color:var(--c-blue)">54%</span> : <span style="color:#f472b6">46%</span>
+
+        <!-- 右侧列，包含仪表盘、柱状图和环境图 -->
+        <div class="col-side">
+            <div class="card">
+                <h3>实时拥挤指数</h3>
+                <!-- 拥挤指数仪表盘容器 -->
+                <div id="chart-gauge" class="chart-box"></div>
+            </div>
+            <div class="card">
+                <h3>人群结构画像</h3>
+                <!-- 人群结构柱状图容器 -->
+                <div id="chart-bar" class="chart-box"></div>
+            </div>
+            <div class="card">
+                <h3>环境舒适度(摄氏度/百分之)</h3>
+                <!-- 环境舒适度图表容器 -->
+                <div id="chart-env" class="chart-box"></div>
             </div>
         </div>
     </div>
-    <!-- 【新增部分 END】 -->
-        <div class="map-stage" id="mapStage">
-            <svg class="svg-layer"><path id="dynamic-connection" class="connection-path" d="" /></svg>
-            
-            <div class="node-btn type-edu" id="btn-zhijin" onclick="handleSelect('zhijin')"><div class="status-led"></div>知津楼</div>
-            <div class="node-btn type-edu" id="btn-gezhi" onclick="handleSelect('gezhi')"><div class="status-led"></div>格致楼</div>
-            <div class="node-btn type-lib" id="btn-library" onclick="handleSelect('library')"><div class="status-led"></div>博文馆 (图书馆)</div>
-            <div class="node-btn type-food" id="btn-canteen1" onclick="handleSelect('canteen1')"><div class="status-led"></div>一食堂</div>
-            <div class="node-btn type-food" id="btn-canteen2" onclick="handleSelect('canteen2')"><div class="status-led"></div>二食堂</div>
-            <div class="node-btn type-food" id="btn-canteen3" onclick="handleSelect('canteen3')"><div class="status-led"></div>三食堂</div>
-        </div>
-
-        <div class="info-bar">
-            <div>
-                <span style="color:#64748b; font-size:12px;">当前选中目标</span><br>
-                <span id="info-name" style="font-size:16px; font-weight:bold; color:var(--c-blue);">正在初始化...</span>
-            </div>
-            <div style="text-align:right;">
-                <span style="color:#64748b; font-size:12px;">状态摘要</span><br>
-                <span id="info-status" style="font-family:'Courier New'; font-weight:bold;">WAITING FOR SIGNAL</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-side">
-        <div class="card">
-            <h3>实时拥挤指数</h3>
-            <div id="chart-gauge" class="chart-box"></div>
-        </div>
-        <div class="card">
-            <h3>人群结构画像</h3>
-            <div id="chart-bar" class="chart-box"></div>
-        </div>
-        <div class="card">
-            <h3>环境舒适度(摄氏度/百分之)</h3>
-            <div id="chart-env" class="chart-box"></div>
-        </div>
-    </div>
-</div>
 </body>
+
 </html>
